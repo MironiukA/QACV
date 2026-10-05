@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QACV | Interview room</title>
+  <link rel="stylesheet" href="/static/interview.css">
+</head>
+<body>
+  <main class="chat-shell">
+    <header class="chat-header">
+      <a href="/" class="brand">QACV<span>.</span></a>
+      <div><p class="eyebrow">INTERVIEW ROOM</p><h1>Симуляция собеседования</h1></div>
+      <label class="mode-select">Режим
+        <select id="interview-mode">
+          <option value="FULL_SCREEN">Полный скрининг</option>
+          <option value="HR_SCREEN">HR-скрининг</option>
+          <option value="TECH_SCREEN">Технический скрининг</option>
+          <option value="HARD_MODE">Hard mode</option>
+        </select>
+      </label>
+    </header>
+    <section id="chat-empty" class="chat-empty">
+      <p>AI изучит структурированный профиль вакансии, резюме и неподтвержденные пробелы. Вопросы задаются по одному.</p>
+      <button id="start-chat" type="button">Начать интервью</button>
+    </section>
+    <section id="chat" class="chat" hidden>
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <form id="chat-form" class="composer">
+        <textarea id="chat-input" rows="3" placeholder="Напишите ответ..." required></textarea>
+        <div class="composer-actions">
+          <button id="record-audio" class="record-audio" type="button">Записать голос</button>
+          <p id="chat-status" role="status"></p>
+          <button id="send-message" type="submit">Отправить</button>
+        </div>
+      </form>
+      <div id="thinking-loader" class="thinking-loader" hidden><span></span><span></span><span></span> Интервьюер думает</div>
+      <button id="complete-chat" class="complete-chat" type="button">Завершить и получить отчет</button>
+    </section>
+    <section id="report" class="report" hidden><h2>Отчет по интервью</h2><pre id="report-content"></pre></section>
+  </main>
+  <script src="/static/interview.js" defer></script>
+</body>
+</html>

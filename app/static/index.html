@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Локальный помощник для подготовки к вакансии">
+  <title>QACV | Точное резюме для вакансии</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <header class="hero">
+      <a class="brand" href="/">QACV<span>.</span></a>
+      <p class="eyebrow">LOCAL CAREER WORKBENCH</p>
+      <h1>Разберите вакансию<br><em>до первого звонка.</em></h1>
+      <p class="hero-copy">Загрузите резюме и добавьте вакансию. Требования и AI-анализ сохраняются на вашем компьютере.</p>
+      <div id="privacy-note" class="privacy-note">
+        <span class="privacy-dot" aria-hidden="true"></span>
+        <span id="privacy-text">Проверяем режим обработки данных...</span>
+      </div>
+    </header>
+
+    <section class="workspace" aria-labelledby="workspace-title">
+      <div class="section-heading">
+        <p class="section-number">01 / ПОДГОТОВКА</p>
+        <h2 id="workspace-title">Новая сессия</h2>
+      </div>
+
+      <form id="analysis-form" novalidate>
+        <div class="form-grid">
+          <fieldset class="panel candidate-panel">
+            <legend>Кандидат</legend>
+            <label>
+              <span>Имя</span>
+              <input id="name" name="name" type="text" placeholder="Анна Иванова" required maxlength="100">
+            </label>
+            <label>
+              <span>Email</span>
+              <input id="email" name="email" type="email" placeholder="anna@example.com" required>
+            </label>
+            <label>
+              <span>Телефон <small>необязательно</small></span>
+              <input id="phone" name="phone" type="tel" placeholder="+7 999 000-00-00" maxlength="30">
+            </label>
+            <label class="file-drop" for="resume">
+              <input id="resume" name="resume" type="file" accept=".pdf,.docx">
+              <span class="file-icon" aria-hidden="true">+</span>
+              <strong id="resume-label">Добавить резюме <small>необязательно</small></strong>
+              <small>PDF или DOCX, до 10 MB. Нужен для сравнения и новой версии CV.</small>
+            </label>
+          </fieldset>
+
+          <fieldset class="panel vacancy-panel">
+            <legend>Вакансия</legend>
+            <div class="source-switch" role="group" aria-label="Источник вакансии">
+              <button class="source-option is-active" type="button" data-source="url">Ссылка</button>
+              <button class="source-option" type="button" data-source="text">Вставить текст</button>
+            </div>
+            <div id="url-source">
+              <label>
+                <span>Публичная ссылка на вакансию</span>
+                <input id="vacancy-url" type="url" placeholder="https://getmatch.ru/vacancies/...">
+              </label>
+              <p class="field-note">Страница вакансии будет загружена из интернета один раз.</p>
+            </div>
+            <div id="text-source" hidden>
+              <label>
+                <span>Название вакансии</span>
+                <input id="vacancy-title" type="text" placeholder="QA Engineer" maxlength="150">
+              </label>
+              <label>
+                <span>Текст вакансии</span>
+                <textarea id="vacancy-text" rows="8" placeholder="Вставьте описание вакансии полностью..."></textarea>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="submit-row">
+          <p id="form-message" class="form-message" role="status"></p>
+          <button id="submit-button" class="submit-button" type="submit">
+            <span>Разобрать вакансию</span>
+            <b aria-hidden="true">↗</b>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section id="progress" class="progress" hidden aria-live="polite">
+      <p class="section-number">02 / ОБРАБОТКА</p>
+      <div class="progress-line"><span></span></div>
+      <p id="progress-text">Подготавливаем сессию...</p>
+    </section>
+
+    <section id="results" class="results" hidden>
+      <div class="results-title">
+        <div>
+          <p class="section-number">03 / РЕЗУЛЬТАТ</p>
+          <h2 id="result-title">Вакансия разобрана</h2>
+        </div>
+        <span id="result-id" class="result-id"></span>
+      </div>
+      <div class="result-grid">
+        <article class="result-card requirements-card">
+          <p class="card-label">Подтвержденные требования</p>
+          <div id="requirements" class="requirements"></div>
+        </article>
+        <article class="result-card analysis-card">
+          <p class="card-label">Локальный AI-анализ</p>
+          <pre id="ai-analysis"></pre>
+          <p id="analysis-warning" class="analysis-warning" hidden></p>
+        </article>
+      </div>
+      <article id="matching-result" class="matching-result" hidden>
+        <div>
+          <p class="card-label">Сопоставление с резюме</p>
+          <h3>Подтверждено только цитатами из резюме</h3>
+          <div id="matches" class="matches"></div>
+        </div>
+        <div>
+          <p class="card-label">Уточняющие вопросы</p>
+          <form id="answers-form" class="answers-form">
+            <div id="questions" class="questions"></div>
+            <label class="additional-note">
+              <span>Вспомнила дополнительно</span>
+              <textarea id="additional-note" rows="4" placeholder="Например: работала с Docker в учебном проекте, настраивала тестовое окружение..."></textarea>
+            </label>
+            <label class="include-option">
+              <input id="include-additional-note" type="checkbox">
+              <span>Добавить этот пункт в новую версию резюме</span>
+            </label>
+            <p id="answers-message" class="answers-message" role="status"></p>
+            <div id="refined-facts" class="refined-facts" hidden></div>
+            <button id="generate-resume-button" class="generate-resume-button" type="submit">Сохранить ответы и создать резюме</button>
+          </form>
+        </div>
+      </article>
+      <article id="generated-resume" class="generated-resume" hidden>
+        <div class="generated-resume-heading">
+          <div>
+            <p class="card-label">Новая версия резюме</p>
+            <h3>Проверьте факты перед отправкой</h3>
+          </div>
+          <span id="resume-version-id" class="result-id"></span>
+        </div>
+        <textarea id="resume-content" rows="18" aria-label="Редактируемое резюме"></textarea>
+        <div class="resume-actions">
+          <p id="resume-edit-message" class="resume-edit-message" role="status"></p>
+          <button id="save-resume-button" class="save-resume-button" type="button">Сохранить правки</button>
+          <button id="export-pdf-button" class="export-pdf-button" type="button">Скачать PDF</button>
+        </div>
+      </article>
+      <section id="screening" class="screening" hidden>
+        <div class="screening-heading">
+          <div>
+            <p class="section-number">04 / СКРИНИНГ</p>
+            <h2>Первичный скрининг</h2>
+          </div>
+          <div class="screening-actions">
+            <button id="start-screening-button" class="start-screening-button" type="button">Быстрый скрининг</button>
+            <button id="open-interview-chat" class="open-interview-chat" type="button">Открыть живой чат</button>
+          </div>
+        </div>
+        <form id="screening-form" class="screening-form" hidden>
+          <p id="screening-topic" class="screening-topic"></p>
+          <p id="screening-question" class="screening-question"></p>
+          <textarea id="screening-answer" rows="5" placeholder="Опишите свой реальный опыт, проект и личный вклад..."></textarea>
+          <p id="screening-message" class="answers-message" role="status"></p>
+          <button id="send-screening-answer" class="generate-resume-button" type="submit">Отправить ответ</button>
+        </form>
+        <div id="screening-result" class="screening-result" hidden>
+          <h3 id="screening-status"></h3>
+          <div id="screening-recommendations" class="recommendations"></div>
+          <button id="start-technical-button" class="start-technical-button" type="button" hidden>Перейти к техническому собеседованию</button>
+        </div>
+      </section>
+      <p class="result-footer">Следующий шаг: сравнить эти требования с резюме и задать вопросы только по неподтвержденному опыту.</p>
+    </section>
+  </main>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
